@@ -14,15 +14,12 @@ class Recorder:
         self.root.resizable(False, False)
         self.button = tk.Button(self.root, text="     🎙️", font=("Arial", 55, "bold"), command=self.clickButton)
         self.button.pack()
-        #self.timeLabel = tk.Label(text="00:00:00", font=("Arial", 20, "bold"))
         self.label = tk.Label(self.root, text="Enter file name:", font=("Arial", 10, "bold"))
         self.label.pack()
         self.text_widget = tk.Text(self.root, height=1, width=20)
         self.text_widget.insert("1.0", "defaultRecordingFileName")
         self.text_widget.pack()
-        #self.timeLabel.pack()
         self.recording = False
-        self.firstTime = True
         self.terminate = False
         self.root.mainloop()
     
@@ -31,11 +28,7 @@ class Recorder:
         if self.recording:
             self.recording = False
             self.button.config(fg="black")
-            #if self.firstTime != True:
-            #    self.terminate = True
-            #    self.root.destroy()
         else:
-            self.firstTime = False
             self.recording = True
             self.button.config(fg="red")
             self.thread = threading.Thread(target=self.comp).start()
@@ -50,12 +43,12 @@ class Recorder:
         frames = []
         stream = audio.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,frames_per_buffer=CHUNK)
 
-        print("Recording audio...")
+        #Record as long as the button shown is red
         while self.recording:
             data = stream.read(CHUNK)
             frames.append(data)
-        print("Finished recording.")
 
+        #Terminate the stream and save the sound data into a .wav file
         stream.stop_stream()
         stream.close()
         audio.terminate()
@@ -67,6 +60,7 @@ class Recorder:
         wave_file.close()
 
     def converSpeechToText(self, textFileName, audioFileName):
+        #Read the sound data, turn it into text and save it into a .txt file
         r = sr.Recognizer()
         with sr.AudioFile(audioFileName) as source:
             audio_data = r.record(source)
@@ -97,6 +91,6 @@ class Recorder:
 
         self.recordAudio(soundFileName)
         self.converSpeechToText(textFileName, soundFileName)
-        os.remove(soundFileName)
+        os.remove(soundFileName) #We dont need the .wav files, so after converting the sound to text, we delete them
 
 Recorder()
