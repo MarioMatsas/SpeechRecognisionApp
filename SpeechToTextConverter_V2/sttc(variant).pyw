@@ -4,6 +4,7 @@ import speech_recognition as sr
 import pyaudio
 import wave
 import os
+import random
 
 class Recorder:
     def __init__(self):
@@ -30,16 +31,16 @@ class Recorder:
         if self.recording:
             self.recording = False
             self.button.config(fg="black")
-            if self.firstTime != True:
-                self.terminate = True
-                self.root.destroy()
+            #if self.firstTime != True:
+            #    self.terminate = True
+            #    self.root.destroy()
         else:
             self.firstTime = False
             self.recording = True
             self.button.config(fg="red")
             self.thread = threading.Thread(target=self.comp).start()
 
-    def recordAudio(self):
+    def recordAudio(self, audioFileName):
         FORMAT = pyaudio.paInt16  #Audio format (16-bit)
         CHANNELS = 1 
         RATE = 44100  #Sample rate (samples per second)
@@ -58,25 +59,44 @@ class Recorder:
         stream.stop_stream()
         stream.close()
         audio.terminate()
-        wave_file = wave.open("testfilek.wav", "wb")
+        wave_file = wave.open(audioFileName, "wb")
         wave_file.setnchannels(CHANNELS)
         wave_file.setsampwidth(audio.get_sample_size(FORMAT))
         wave_file.setframerate(RATE)
         wave_file.writeframes(b"".join(frames))
         wave_file.close()
 
-    def converSpeechToText(self):
+    def converSpeechToText(self, textFileName, audioFileName):
         r = sr.Recognizer()
-        with sr.AudioFile("testfilek.wav") as source:
+        with sr.AudioFile(audioFileName) as source:
             audio_data = r.record(source)
 
-        text = r.recognize_google(audio_data)
-        with open("defaultRecordingFileName.txt", "a") as f:
-            f.write(text+"\n")
+        try:
+            text = r.recognize_google(audio_data)
+            with open(textFileName, "a") as f:
+                f.write(text+"\n")
+        except sr.UnknownValueError:
+            pass
+        except sr.RequestError:
+            pass
 
     def comp(self):
-        self.recordAudio()
-        self.converSpeechToText()
-        os.remove("testfilek.wav")
+        #Get the name of the file the text will be stored into
+        textFileName = self.text_widget.get("1.0", "end-1c")+".txt"
+        if textFileName == ".txt":
+            textFileName = "defaultRecordingFileName.txt"
+        
+        #We generate a random name for the audio file, so that if 2 recordings occur at almost the same time the file deletion
+        #that happens at the end doesn't cause any issues
+        SAMPLE = "1234567890qazswxedcvfrtgbnhyujnmkiolpQAZSWXCDERFVBGTYHNMJUIKLOP"
+        soundFileName = "soundfile"
+        for _ in range(10):
+            soundFileName +="".join(random.choice(SAMPLE))
+        soundFileName += ".wav"
+        print(soundFileName)
+
+        self.recordAudio(soundFileName)
+        self.converSpeechToText(textFileName, soundFileName)
+        os.remove(soundFileName)
 
 Recorder()

@@ -27,9 +27,9 @@ class Recorder:
         if self.recording:
             self.recording = False
             self.button.config(fg="black")
-            if self.firstTime != True:
-                self.terminate = True
-                self.root.destroy()
+            #if self.firstTime != True:
+            #    self.terminate = True
+            #    self.root.destroy()
         else:
             self.firstTime = False
             self.recording = True
@@ -42,6 +42,7 @@ class Recorder:
             self.filename = "defaultRecordingFileName.txt"
         print(self.filename)
         while self.recording:
+            print(self.recording)
             #threading.Thread(target=self.record("goofygoobermusic.txt")).start()
             self.record(self.filename)
 
@@ -57,16 +58,13 @@ class Recorder:
             # Start the continuous listening
             audio = r.listen(source)
         #print("Transcribing...")
-        #try:
+        try:
             text = r.recognize_google(audio)
             with open(filename, "a") as file:
                 file.write(text+"\n")
-                """
         except sr.UnknownValueError:
             pass
-        except sr.RequestError as e:
+        except sr.RequestError:
             pass
-        #   print(e)
-        #return trueAudioData
-        """
+
 Recorder()
