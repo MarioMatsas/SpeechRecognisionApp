@@ -31,7 +31,9 @@ class Recorder:
         else:
             self.recording = True
             self.button.config(fg="red")
-            self.thread = threading.Thread(target=self.comp).start()
+            self.thread = threading.Thread(target=self.comp)
+            self.thread.daemon = True #By setting the daemon property to True we allow the thread to be terminated the moment the "main thread" gets interupted
+            self.thread.start()
 
     def recordAudio(self, audioFileName):
         FORMAT = pyaudio.paInt16  #Audio format (16-bit)
