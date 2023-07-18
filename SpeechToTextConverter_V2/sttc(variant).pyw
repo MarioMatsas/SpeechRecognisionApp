@@ -1,6 +1,4 @@
 import threading
-import tkinter as tk
-from tkinter import ttk
 import speech_recognition as sr
 import pyaudio
 import wave
@@ -15,7 +13,7 @@ class Recorder:
         #GUI
         self.root = ctk.CTk()
 
-        #Bringing the main window at the middle of the screen
+        #Bringing the main window to the middle of the screen
         window_height = 200
         window_width = 200
         screen_width = self.root.winfo_screenwidth()
