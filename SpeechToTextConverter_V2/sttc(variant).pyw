@@ -13,6 +13,7 @@ class Recorder:
     def __init__(self):
         #GUI
         self.root = ctk.CTk()
+        self.root.title("Recorder")
 
         #Bringing the main window to the middle of the screen
         window_height = 385
@@ -123,14 +124,15 @@ class Recorder:
 
     def comp(self):
         #Get the name of the file the text will be stored into
-        textFileName = re.sub('\s+','',self.text_widget.get("1.0", "end-1c"))
+        textFileName = repr(re.sub('\s+','',self.text_widget.get("1.0", "end-1c")))[1:-1]
         if textFileName == "":
-            textFileName = "defaultRecordingFileName"
-        elif "." in textFileName:
-            nameParts = textFileName.split(".")
-            if nameParts[-1] != "txt":
-                textFileName = textFileName+".txt" 
-        
+            textFileName = "defaultRecordingFileName.txt"
+        file_path = Path(textFileName)
+        #Check if the file name exists. If it does that means that the user wants to write in this file regardless of it's type (aka the extension)
+        #However if the file doesn't exist, we assume that the user wants to use a .txt file and thus add the extension
+        if not file_path.exists():
+            textFileName+=".txt"
+         
         #Get the code of the chosen language
         language_code = self.language_values.get(self.value_inside.get())
         
@@ -152,6 +154,7 @@ class Recorder:
     def loadingScreen(self):
         #GUI of the loading screen
         self.loadScrn = ctk.CTkToplevel(self.root)
+        self.loadScrn.title("Saving")
         self.loadScrn.geometry("300x150")
         self.loadScrn.resizable(False, False)
         label2 = ctk.CTkLabel(self.loadScrn, text="Please wait while your data is being saved...", font=("Arial", 13, "bold"), pady=30)
