@@ -30,7 +30,7 @@ class Recorder:
         
         #Match all the languages to their respective code
         self.language_values = {
-            "Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","German / Deutsch":"de",
+            "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","German / Deutsch":"de",
             "Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja","Portuguese / Português":"pt-PT",
             "Russian / Русский":"ru","Spanish / Español":"es"
         }
