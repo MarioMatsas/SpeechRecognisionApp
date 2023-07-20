@@ -26,14 +26,14 @@ class Recorder:
         self.root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
         #List of available languages
-        values = ["Albanian / Shqip","Arabic / اللغة العربية","Bengali / বাংলা","Chinese / 普通话","English","French / Français","German / Deutsch",
+        values = ["Albanian / Shqip","Arabic / اللغة العربية","Bengali / বাংলা","Chinese / 普通话","English","German / Deutsch",
                 "Greek / Ελληνικά","Hindi / हिन्दी","Italian/ Italiano","Japanese / 日本語","Portuguese / Português","Russian / Русский","Spanish / Español"]
         
         #Match all the languages to their respective code
         self.language_values = {
-            "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","French / Français":"fr",
-            "German / Deutsch":"de","Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja",
-            "Portuguese / Português":"pt-PT","Russian / Русский":"ru","Spanish / Español":"es"
+            "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","German / Deutsch":"de",
+            "Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja","Portuguese / Português":"pt-PT",
+            "Russian / Русский":"ru","Spanish / Español":"es"
         }
 
         #Recording button
