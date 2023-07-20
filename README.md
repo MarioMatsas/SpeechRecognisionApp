@@ -16,7 +16,7 @@ A simple and user friendly program that allows the user to interact with a GUI t
 *	Russian 
 *	Spanish 
 ## Requirments
-* Run `python -m pip install -r requirements.txt` to install all the required packages
+* Put `requirements.txt` in the directory where you plan to run the pip install command. If the file is in a different directory, you need to specify its path like `path/to/requirements.txt` and run `python -m pip install -r requirements.txt` to install all the required packages.
 ## Things to Note
 * The **CTkScrollableDropdown** library that I am using is fully credited to it’s creator, **Akascape**
 * The number of languages is bound to increase over time, however the currently supported languages either belong in the top 11 most widely spoken languages in the world or are simply native to myself.
