@@ -25,15 +25,16 @@ class Recorder:
         self.root.resizable(False, False)
         self.root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
-         #List of available languages
+        #List of available languages
         values = ["Albanian / Shqip","Arabic / اللغة العربية","Bengali / বাংলা","Chinese / 普通话","English","French / Français","German / Deutsch",
-                "Greek / Ελληνικά","Hindi / हिन्दी","Italian/ Italiano","Japanese / 日本語","Portuguese / Português","Russian / Русский","Spanish / Español"]
+                "Greek / Ελληνικά","Hindi / हिन्दी","Italian/ Italiano","Japanese / 日本語","Portuguese / Português","Russian / Русский","Spanish / Español",
+                "Turkish / Türkçe","Vietnamese / Tiếng Việt"]
         
         #Match all the languages to their respective code
         self.language_values = {
             "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","French / Français":"fr",
             "German / Deutsch":"de","Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja",
-            "Portuguese / Português":"pt-PT","Russian / Русский":"ru","Spanish / Español":"es"
+            "Portuguese / Português":"pt-PT","Russian / Русский":"ru","Spanish / Español":"es", "Turkish / Türkçe":"tr", "Vietnamese / Tiếng Việt":"vi"
         }
         #Recording button and pause button
         self.button = ctk.CTkButton(self.root, text="     🎙️", height=100, font=("Arial", 50, "bold"), corner_radius=50, hover_color="#3b8ed9", text_color_disabled="#dce4ff", command=self.clickButton)
