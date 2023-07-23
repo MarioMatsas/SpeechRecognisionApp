@@ -16,8 +16,8 @@ class Recorder:
         self.root.title("Recorder")
 
         #Bringing the main window to the middle of the screen
-        window_height = 385
-        window_width = 385
+        window_height = 412#385
+        window_width = 412
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         x_cordinate = int((screen_width/2) - (window_width/2))
@@ -25,23 +25,24 @@ class Recorder:
         self.root.resizable(False, False)
         self.root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
-        #List of available languages
-        values = ["Albanian / Shqip","Arabic / اللغة العربية","Bengali / বাংলা","Chinese / 普通话","English","German / Deutsch",
+         #List of available languages
+        values = ["Albanian / Shqip","Arabic / اللغة العربية","Bengali / বাংলা","Chinese / 普通话","English","French / Français","German / Deutsch",
                 "Greek / Ελληνικά","Hindi / हिन्दी","Italian/ Italiano","Japanese / 日本語","Portuguese / Português","Russian / Русский","Spanish / Español"]
         
         #Match all the languages to their respective code
         self.language_values = {
-            "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","German / Deutsch":"de",
-            "Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja","Portuguese / Português":"pt-PT",
-            "Russian / Русский":"ru","Spanish / Español":"es"
+            "Albanian / Shqip":"sq","Arabic / اللغة العربية":"ar","Bengali / বাংলা":"bn","Chinese / 普通话":"zh-CN","English":"en","French / Français":"fr",
+            "German / Deutsch":"de","Greek / Ελληνικά":"el","Hindi / हिन्दी":"hi","Italian/ Italiano":"it","Japanese / 日本語":"ja",
+            "Portuguese / Português":"pt-PT","Russian / Русский":"ru","Spanish / Español":"es"
         }
-
-        #Recording button
-        self.button = ctk.CTkButton(self.root, text="     🎙️", height=100, font=("Arial", 50, "bold"), corner_radius=50, hover_color="#3b8ed0", command=self.clickButton)
+        #Recording button and pause button
+        self.button = ctk.CTkButton(self.root, text="     🎙️", height=100, font=("Arial", 50, "bold"), corner_radius=50, hover_color="#3b8ed9", text_color_disabled="#dce4ff", command=self.clickButton)
         self.button.pack(pady=10)
-        self.value_inside = ctk.StringVar(value="English")
-
+        
+        self.pause_button = ctk.CTkButton(self.root, text="Pause", height=10, anchor="center", font=("Arial", 15, "bold"), corner_radius=50, fg_color="#ffcdd2", hover_color="#ffcdce", state="disabled", text_color_disabled="#dce4ff", command=self.pause)
+        self.pause_button.pack(pady=2)
         #Attach to OptionMenu 
+        self.value_inside = ctk.StringVar(value="English")
         optionmenu = ctk.CTkOptionMenu(self.root, width=220, variable=self.value_inside)
         optionmenu.pack(padx=10, pady=30)
         CTkScrollableDropdown(optionmenu, values=values)
@@ -54,12 +55,24 @@ class Recorder:
         self.text_widget.pack()
 
         self.recording = False #Check if the recordign is active
+        self.paused = False #Check if the recording has been paused
         self.first_click = True
         self.root.mainloop()
+
+    def pause(self):
+        if self.paused:
+            self.paused = False
+            self.pause_button.configure(fg_color="#ffcdd2", hover_color="#ffcdce")
+        else:
+            self.paused = True
+            self.pause_button.configure(fg_color="#ffb3bb", hover_color="#ffb3be")
     
     def clickButton(self):
         #If we are recording, then the next press of the button will turn it's colour black otherwise it will become red
         if self.recording:
+            self.pause_button.configure(state="disabled")
+            self.paused = False
+            self.pause_button.configure(fg_color="#ffcdd2", hover_color="#ffcdce")
             self.recording = False
             self.button.configure(fg_color="#3b8ed0")
             self.button.configure(hover_color="#3b8ed0")
@@ -67,6 +80,7 @@ class Recorder:
             if self.first_click == False:
                 self.button.configure(state="disabled")
         else:
+            self.pause_button.configure(state="normal")
             self.recording = True
             self.first_click = False
             self.button.configure(fg_color="#708090")
@@ -87,8 +101,9 @@ class Recorder:
 
         #Record as long as the recording is active (the button is grey)
         while self.recording:
-            data = stream.read(CHUNK)
-            frames.append(data)
+                if not self.paused: #As long as the recording hasn't been paused, it continues picking up sound from the mic
+                    data = stream.read(CHUNK)
+                    frames.append(data)
 
         #Terminate the stream and save the sound data to a .wav file
         stream.stop_stream()
@@ -110,9 +125,16 @@ class Recorder:
         try:
             text = r.recognize_google(audio_data, language=code)
             file_path = Path(textFileName)
+            words = text.split()
             try:
                 with file_path.open(mode="a", encoding="utf-8") as f:
-                    f.write(text+"\n")
+                    for i in range(0, len(words), 23):
+                        if (len(words) - i < 23):
+                            line = " ".join(words[i:len(words)])
+                        else:
+                            line = " ".join(words[i:i+23])
+                        f.write(line + "\n")
+                    #f.write("\n")
             except FileNotFoundError:
                 print("File not found.")
             except IOError:
@@ -145,7 +167,7 @@ class Recorder:
         soundFileName += ".wav"
 
         self.recordAudio(soundFileName)
-        self.loadingScreen()
+        th = threading.Thread(target = self.loadingScreen).start()
         self.converSpeechToText(textFileName, soundFileName, language_code)
         self.loadScrn.destroy()
         os.remove(soundFileName) #We dont need the .wav files, so after converting the sound to text, we delete them
