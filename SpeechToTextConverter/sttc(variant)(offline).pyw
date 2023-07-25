@@ -40,7 +40,7 @@ class Recorder:
         self.button = ctk.CTkButton(self.root, text="     🎙️", height=100, font=("Arial", 50, "bold"), corner_radius=50, hover_color="#3b8ed9", text_color_disabled="#dce4ff", command=self.clickButton)
         self.button.pack(pady=10)
         
-        self.pause_button = ctk.CTkButton(self.root, text="Pause", height=10, anchor="center", font=("Arial", 15, "bold"), corner_radius=50, fg_color="#ffcdd2", hover_color="#ffcdce", state="disabled", text_color_disabled="#dce4ff", command=self.pause)
+        self.pause_button = ctk.CTkButton(self.root, text="Pause", height=10, anchor="center", font=("Arial", 15, "bold"), corner_radius=50, fg_color="#cdcdcd", hover_color="#d4d4d4", state="disabled", text_color_disabled="#f3f6fb", text_color="#ffffff", command=self.pause)##dce4ff
         self.pause_button.pack(pady=2)
         #Attach to OptionMenu 
         self.value_inside = ctk.StringVar(value="English")
@@ -63,17 +63,17 @@ class Recorder:
     def pause(self):
         if self.paused:
             self.paused = False
-            self.pause_button.configure(fg_color="#ffcdd2", hover_color="#ffcdce")
+            self.pause_button.configure(fg_color="#cdcdcd", hover_color="#d4d4d4")
         else:
             self.paused = True
-            self.pause_button.configure(fg_color="#ffb3bb", hover_color="#ffb3be")
+            self.pause_button.configure(fg_color="#a6a39e", hover_color="#a6a39e")
     
     def clickButton(self):
-        #If we are recording, then the next press of the button will turn it's colour black otherwise it will become red
+        #If we are recording, then the next press of the button will end the recording, otherwise it will start it
         if self.recording:
             self.pause_button.configure(state="disabled")
             self.paused = False
-            self.pause_button.configure(fg_color="#ffcdd2", hover_color="#ffcdce")
+            self.pause_button.configure(fg_color="#cdcdcd", hover_color="#d4d4d4")
             self.recording = False
             self.button.configure(fg_color="#3b8ed0")
             self.button.configure(hover_color="#3b8ed0")
