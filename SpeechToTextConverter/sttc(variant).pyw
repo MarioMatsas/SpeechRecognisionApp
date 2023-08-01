@@ -126,23 +126,24 @@ class Recorder:
         file_path = Path(audioFileName)
         if file_path.exists():
             os.remove(audioFileName) #We dont need the .wav files, so after converting the sound to text, we delete them    
-            
-        text = r.recognize_google(audio_data, language=code)
-        file_path = Path(textFileName)
-        words = text.split()
+
         try:
-            with file_path.open(mode="a", encoding="utf-8") as f:
-                for i in range(0, len(words), 23):
-                    if (len(words) - i < 23):
-                        line = " ".join(words[i:len(words)])
-                    else:
-                        line = " ".join(words[i:i+23])
-                    f.write(line + "\n")
-                #f.write("\n")
-        except FileNotFoundError:
-            print("File not found.")
-        except IOError:
-            print("Error while opening the file.")
+            text = r.recognize_google(audio_data, language=code)
+            file_path = Path(textFileName)
+            words = text.split()
+            try:
+                with file_path.open(mode="a", encoding="utf-8") as f:
+                    for i in range(0, len(words), 23):
+                        if (len(words) - i < 23):
+                            line = " ".join(words[i:len(words)])
+                        else:
+                            line = " ".join(words[i:i+23])
+                        f.write(line + "\n")
+                    #f.write("\n")
+            except FileNotFoundError:
+                print("File not found.")
+            except IOError:
+                print("Error while opening the file.")
         except sr.UnknownValueError:
             pass
         except sr.RequestError:
