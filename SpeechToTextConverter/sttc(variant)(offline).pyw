@@ -123,6 +123,10 @@ class Recorder:
         with sr.AudioFile(audioFileName) as source:
             audio_data = r.record(source)
 
+        file_path = Path(audioFileName)
+        if file_path.exists():
+            os.remove(audioFileName) #We dont need the .wav files, so after converting the sound to text, we delete them    
+
         try:
             text = r.recognize_sphinx(audio_data, language=code)
             file_path = Path(textFileName)
@@ -171,7 +175,6 @@ class Recorder:
         th = threading.Thread(target = self.loadingScreen).start()
         self.converSpeechToText(textFileName, soundFileName, language_code)
         self.loadScrn.destroy()
-        os.remove(soundFileName) #We dont need the .wav files, so after converting the sound to text, we delete them
         self.button.configure(state="active")
 
     def loadingScreen(self):
