@@ -18,6 +18,7 @@ A simple and user friendly program that allows the user to interact with a GUI t
 *	Turkish
 *	Vietnamese
 ## Requirments
+* Python >= 3.8
 * Put `requirements.txt` in the directory where you plan to run the pip install command. If the file is in a different directory, you need to specify its path like `path/to/requirements.txt` and run `python -m pip install -r requirements.txt` to install all the required packages.
 ## Things to Note
 * The **CTkScrollableDropdown** library that I am using is fully credited to it’s creator, **Akascape**
