@@ -23,4 +23,4 @@ A simple and user friendly program that allows the user to interact with a GUI t
 ## Things to Note
 * The **CTkScrollableDropdown** library that I am using is fully credited to it’s creator, **Akascape**
 * The number of languages is bound to increase over time, however the currently supported languages either belong in the top most widely spoken languages in the world or are simply native to myself.
-* While the the offline variant does work, it's functionality is not on par with the online one and the results are often not as accurate. So i recommend using the **online variant** to achieve the best results. 
+* While the offline variant does work, it's functionality is not on par with the online one and the results are often not as accurate. So i recommend using the **online variant** to achieve the best results. 
